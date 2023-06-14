@@ -65,9 +65,16 @@ const canvas = document.querySelector('.webgl')
 const render = new THREE.WebGLRenderer({
 	canvas
 })
-render.setSize(sizes.width, sizes.height)
-render.render(scene, camera)
 
+render.setSize(sizes.width, sizes.height)
+
+const anime = () =>
+{
+	firstGroup.rotation.x += 0.01
+	window.requestAnimationFrame(anime)
+	render.render(scene, camera)
+}
+anime()
 /*properties to transform objects are 
 	-position
 	-scale:scale is for the x,y,z scale 
