@@ -83,11 +83,29 @@ const render = new THREE.WebGLRenderer({
 
 render.setSize(sizes.width, sizes.height)
 
+const oldCursor =
+{
+	x : 0,
+	x1 : 0
+}
+
 const anime = () =>
 {
 	//firstGroup.rotation.x += 0.01
-	camera.position.x = cursor.x * 10
-	camera.position.y = cursor.y * 10
+	if (oldCursor.x != cursor.x)
+	{
+		camera.position.x = Math.sin(cursor.x * (Math.PI * 2)) * 3
+		camera.position.z = Math.cos(cursor.x * (Math.PI * 2)) * 3
+		oldCursor.x = cursor.x
+		oldCursor.x1 = cursor.x
+	}
+	else
+	{
+		oldCursor.x1 += 0.001
+		camera.position.x = Math.sin(oldCursor.x1 * (Math.PI * 2)) * 3
+		camera.position.z = Math.cos(oldCursor.x1 * (Math.PI * 2)) * 3
+	}
+	camera.position.y = cursor.y * 5
 	camera.lookAt(mesh.position)
 	render.render(scene, camera)
 	window.requestAnimationFrame(anime)
