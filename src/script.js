@@ -52,9 +52,18 @@ mesh.position.z = 0
 //camera
 
 const sizes = {
-	width: 800,
-	height: 600
+	width: window.innerWidth,
+	height: window.innerHeight
 }
+
+window.addEventListener('resize', ()=>{
+	sizes.height = window.innerHeight
+	sizes.width = window.innerWidth
+	camera.aspect = sizes.width / sizes.height
+	camera.updateProjectionMatrix()
+	render.setSize(sizes.width, sizes.height)
+})
+
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)//this method to build a camera and the paramatere are field of view, aspect ratio
 console.log(mesh.position.length())//distance between the center of the scene and our object
 console.log(mesh.position.distanceTo(camera.position))//distance between camera and cube
@@ -65,7 +74,7 @@ const axesHelper = new THREE.AxesHelper(1)
 scene.add(axesHelper)
 
 	//changing camera position
-camera.position.z = 5
+camera.position.z = 2
 camera.position.x = 0
 camera.position.y = 0
 
@@ -99,6 +108,9 @@ const oldCursor =
 	if the bulttin control have all the features u need use it*/
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.autoRotate = true
+controls.maxPolarAngle = Math.PI / 2
+
 
 const anime = () =>
 {
