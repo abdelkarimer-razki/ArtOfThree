@@ -1,6 +1,20 @@
 import './style.css'
 import * as THREE from 'three'
 
+
+//detecting mouse coordinates
+
+const cursor = 
+{
+	x : 0,
+	y : 0
+}
+window.addEventListener('mousemove', (event)=>
+{
+	cursor.x = event.clientX / sizes.width - 0.5;
+	cursor.y = event.clientY / sizes.height - 0.5;
+})
+
 const scene = new THREE.Scene()
 
 //buding a red cube
@@ -13,11 +27,11 @@ const boxGreen = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 3), new THREE.MeshBa
 
 //bulding a group
 const firstGroup = new THREE.Group()
-firstGroup.add(boxGreen, mesh)
+firstGroup.add(mesh)
 scene.add(firstGroup)
 
 //positioning the group
-firstGroup.position.x = -8
+//firstGroup.position.x = -8
 
 //positioning the red box
 mesh.position.x = 0
@@ -50,7 +64,7 @@ camera.position.z = 9
 camera.position.x = 9
 camera.position.y = 9
 
-camera.lookAt(firstGroup.position)//this function makes the camera look at the group positon
+camera.lookAt(mesh.position)//this function makes the camera look at the group positon
 scene.add(camera)
 
 //rotating the red box
@@ -70,7 +84,10 @@ render.setSize(sizes.width, sizes.height)
 
 const anime = () =>
 {
-	firstGroup.rotation.x += 0.01
+	//firstGroup.rotation.x += 0.01
+	camera.position.x = cursor.x * 10
+	camera.position.y = cursor.y * -10
+	camera.lookAt(mesh.position)
 	window.requestAnimationFrame(anime)
 	render.render(scene, camera)
 }
