@@ -1,18 +1,20 @@
 import './style.css'
 import * as THREE from 'three'
+import { ceilPowerOfTwo } from 'three/src/math/MathUtils'
 
 
 //detecting mouse coordinates
-
+const canvas = document.querySelector('.webgl')
 const cursor = 
 {
 	x : 0,
 	y : 0
 }
-window.addEventListener('mousemove', (event)=>
+canvas.addEventListener('mousemove', (event)=>
 {
-	cursor.x = event.clientX / sizes.width - 0.5;
-	cursor.y = event.clientY / sizes.height - 0.5;
+	cursor.x = (event.clientX - canvas.offsetLeft) / sizes.width - 0.5;
+	cursor.y = -((event.clientY - canvas.offsetTop) / sizes.height - 0.5);
+	//console.log("x:",cursor.x,"|y:",cursor.y)
 })
 
 const scene = new THREE.Scene()
@@ -21,14 +23,14 @@ const scene = new THREE.Scene()
 const box = new THREE.BoxGeometry(1, 1, 1) //this method to build a box and the paramatere are width, height, depth
 const materiel = new THREE.MeshBasicMaterial({ color: 0xff0000 })//this method to build a materiel and the paramatere are color
 const mesh = new THREE.Mesh(box, materiel)//this method to build a mesh and the paramatere are geometry, materiel
-
+scene.add(mesh)
 //building a green cube
 const boxGreen = new THREE.Mesh(new THREE.BoxGeometry(1, 2, 3), new THREE.MeshBasicMaterial({color: 0x00ff00}))
 
 //bulding a group
 const firstGroup = new THREE.Group()
-firstGroup.add(mesh)
-scene.add(firstGroup)
+//firstGroup.add(mesh)
+//scene.add(firstGroup)
 
 //positioning the group
 //firstGroup.position.x = -8
@@ -36,7 +38,7 @@ scene.add(firstGroup)
 //positioning the red box
 mesh.position.x = 0
 mesh.position.y = 0
-mesh.position.z = -3
+mesh.position.z = 0
 
 
 //mesh.scale.set(): using the scale propertie is simply changing the scale of the mesh
@@ -57,12 +59,12 @@ console.log(mesh.position.distanceTo(camera.position))//distance between camera 
 
 //axesHelper
 const axesHelper = new THREE.AxesHelper(1)
-scene.add(axesHelper)
+//scene.add(axesHelper)
 
 //changing camera position
-camera.position.z = 9
-camera.position.x = 9
-camera.position.y = 9
+camera.position.z = 5
+camera.position.x = 0
+camera.position.y = 0
 
 camera.lookAt(mesh.position)//this function makes the camera look at the group positon
 scene.add(camera)
@@ -71,11 +73,10 @@ scene.add(camera)
 
 mesh.rotation.reorder('YXZ')/*this reorder funciton solves a problem that is called 
 a gimbal lock which simple the rotation isn't being done as you imagine */
-mesh.rotation.x = 2
-mesh.rotation.y = 3
+/*mesh.rotation.x = 2
+mesh.rotation.y = 3*/
 
 //renderer
-const canvas = document.querySelector('.webgl')
 const render = new THREE.WebGLRenderer({
 	canvas
 })
@@ -86,10 +87,10 @@ const anime = () =>
 {
 	//firstGroup.rotation.x += 0.01
 	camera.position.x = cursor.x * 10
-	camera.position.y = cursor.y * -10
+	camera.position.y = cursor.y * 10
 	camera.lookAt(mesh.position)
-	window.requestAnimationFrame(anime)
 	render.render(scene, camera)
+	window.requestAnimationFrame(anime)
 }
 anime()
 /*properties to transform objects are 
