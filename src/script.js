@@ -19,10 +19,11 @@ canvas.addEventListener('mousemove', (event)=>
 })
 
 const scene = new THREE.Scene()
+scene.background = new THREE.Color( 0x212129 );
 
 	//buding a red cube
-const box = new THREE.BoxGeometry(1, 1, 1) //this method to build a box and the paramatere are width, height, depth
-const materiel = new THREE.MeshBasicMaterial({ color: 0xff0000 })//this method to build a materiel and the paramatere are color
+const box = new THREE.BoxGeometry(1, 1, 1,10 ,10 ,10) //this method to build a box and the paramatere are width, height, depth
+const materiel = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe:true})//this method to build a materiel and the paramatere are color
 const mesh = new THREE.Mesh(box, materiel)//this method to build a mesh and the paramatere are geometry, materiel
 scene.add(mesh)
 	//building a green cube
