@@ -36,6 +36,6 @@ Contributions to this repository are welcome. If you discover any issues, errors
 We would like to express our gratitude to Bruno Simon for creating the course that inspired this repository. His expertise and dedication to teaching Three.js have been instrumental in providing a valuable learning resource for aspiring 3D graphics developers.
 
 ## Contact
-For any questions, feedback, or inquiries related to this repository or the Bruno Simon's course, please feel free to contact us at bilrim.errazki@gmail.com
+For any questions, feedback, or inquiries related to this repository or the Bruno Simon's course, please feel free to contact me at bilrim.errazki@gmail.com
 
 Happy learning and enjoy exploring the world of Three.js!
