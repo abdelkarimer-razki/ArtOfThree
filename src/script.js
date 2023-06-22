@@ -41,15 +41,10 @@ const indices = [
 geometry.setIndex(indices);
 scene.add(boxBuffer)
 
-//ADDING TEXTURE
-const image = new Image()
-const texture = new THREE.Texture(image)
-image.onload = () =>
-{
-texture.needsUpdate = true
-console.log("image loaded")
-}
-image.src = "/door.jpg"
+	//ADDING TEXTURE
+const textureLoader = new THREE.TextureLoader()
+const texture = textureLoader.load("/door.jpg")
+const Earth = textureLoader.load("/earth.jpg")
 
 	//BUILDING A REDCUBE USING BOXGEO
 const box = new THREE.BoxGeometry(1, 1, 1,10 ,10 ,10) //this method to build a box and the paramatere are width, height, depth
@@ -61,7 +56,17 @@ mesh.position.y = 0
 mesh.position.z = 1
 mesh.rotation.reorder('YXZ')
 
-/*====this reorder funciton solves 
+	//CREATING A SPHERE WITH DIFFERENCT MATERIALS
+const earth = new THREE.SphereGeometry(15,32,32)
+const materiel1 = new THREE.MeshBasicMaterial( {map:Earth})
+const mesh1 = new THREE.Mesh(earth, materiel1)
+const moon = new THREE.SphereGeometry(5, 32, 32)
+const materiel2 = new THREE.MeshNormalMaterial()
+const mesh2 = new THREE.Mesh(moon, materiel2)
+scene.add(mesh1)
+mesh2.position.z = 60
+scene.add(mesh2)
+/*====this reorder funciton solves
 a problem that is called a gimbal 
 lock which simple the rotation isn't 
 being done as you imagine =====*/
@@ -78,7 +83,7 @@ firstGroup.add(mesh)
 scene.add(firstGroup)
 firstGroup.position.x = -8*/
 
-  	//CONTROLLING SCREEN SIZE
+	//CONTROLLING SCREEN SIZE
  const sizes = {
 	 width: window.innerWidth,
 	 height: window.innerHeight
@@ -93,7 +98,7 @@ firstGroup.position.x = -8*/
 
 	//BUILDING THE CAMERA
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)//this method to build a camera and the paramatere are field of view, aspect ratio
-camera.position.z = 7
+camera.position.z = 40
 camera.position.x = 0
 camera.position.y = 0
 camera.lookAt(mesh.position)//this function makes the camera look at the group positon
@@ -121,18 +126,17 @@ render.setSize(sizes.width, sizes.height)
 	//ORBITCONTROLS
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
-controls.autoRotate = true
-controls.target = mesh.position //THIS ONE REPLACE THE CAMERA.LOOKAT FUNCTION
+controls.autoRotate = false
+//controls.target = mesh1.position //THIS ONE REPLACE THE CAMERA.LOOKAT FUNCTION
 controls.maxPolarAngle = Math.PI / 2
 
 	//RENDERING THE FRAMES ON THE WINDOW
-const oldCursor =
-{
-	x : 0,
-	x1 : 0
-}
+let D = Math.PI
 const anime = () =>
 {
+	mesh2.position.x = mesh.position.x + Math.sin(D) * mesh2.position.x
+	mesh2.position.z = mesh.position.z + mesh2.position.z / Math.cos(D)
+	D += 0.1
 	//firstGroup.rotation.x += 0.01
 	/*if (oldCursor.x != cursor.x)
 	{
@@ -148,7 +152,7 @@ const anime = () =>
 		camera.position.z = Math.cos(oldCursor.x1 * (Math.PI * 2)) * 3
 	}
 	camera.position.y = cursor.y * 5*/
-	camera.lookAt(mesh.position)
+	//camera.lookAt(mesh.position)
 	controls.update()
 	render.render(scene, camera)
 	window.requestAnimationFrame(anime)
